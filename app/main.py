@@ -8,9 +8,11 @@ from app.model import DogCatModel
 from torchvision import transforms
 import torch
 import torchvision.models as models
-
+import logging
+import app.config.logging_config as config
 app = FastAPI()
-
+config.initLog()
+log = logging.getLogger("dog-cat")
 def read_imagefile(data) -> Image.Image:
     image = Image.open(BytesIO(data))
     return image
@@ -36,9 +38,13 @@ async def predict(file: UploadFile=File(...)):
     dcModel.eval()
     with torch.no_grad():
         prediction= dcModel(image)
-        _,label = torch.max(prediction,dim=1)
-        label = label.item()
-    return {"prediction": label}
+        val,label = torch.max(prediction,dim=1)
+        log.info(f"Prediction: {label.item()} with val {val.item()}")
+        if val > 0.7:
+            label = label.item()
+            return {"prediction": label}
+        else:
+            return {"prediction": "Unknown"}
 
 
     
