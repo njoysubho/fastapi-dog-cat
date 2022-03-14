@@ -19,7 +19,7 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         AWS_ACCESS_ID: ${{ secrets.AWS_ACCESS_ID }}
         AWS_ACCESS_SECRET: ${{ secrets.AWS_ACCESS_SECRET }}
-      run: heroku container:push web --app=${{ secrets.HEROKU_APP_NAME }} --arg AWS_ACCESS_ID=${{ secrets.AWS_ACCESS_ID }} --arg AWS_ACCESS_SECRET=${{ secrets.AWS_ACCESS_SECRET }} --arg MODEL_NAME=model
+      run: heroku container:push web --app=${{ secrets.HEROKU_APP_NAME }} --arg AWS_ACCESS_ID=${{ secrets.AWS_ACCESS_ID }},AWS_ACCESS_SECRET=${{ secrets.AWS_ACCESS_SECRET }},MODEL_NAME=model
     - name: Release
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
